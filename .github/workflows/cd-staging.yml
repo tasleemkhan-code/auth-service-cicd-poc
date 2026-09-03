@@ -16,7 +16,6 @@ jobs:
         with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and push
         run: |
           docker build -t ${{ vars.DOCKERHUB_USERNAME }}/auth-service:staging-${{ github.sha }} .
