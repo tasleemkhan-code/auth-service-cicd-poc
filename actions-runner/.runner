@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "TASLEEMDELL",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus21.actions.githubusercontent.com/rsRcgZy2b6zF7d2zrgMv84zjcoGRHGmSJ9fORzKIlmE107KZIL/",
+  "gitHubUrl": "https://github.com/tasleemkhan-code/auth-service-cicd-poc",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
