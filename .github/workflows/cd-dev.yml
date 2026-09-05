@@ -31,5 +31,8 @@ jobs:
           NOMAD_NAMESPACE: ${{ vars.NOMAD_NAMESPACE }}
           NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
         run: |
-          sed "s|IMAGE_TAG|${{ vars.DOCKERHUB_USERNAME }}/auth-service:dev-${{ github.sha }}|g" nomad/auth-service.nomad.tpl > nomad/auth-service.nomad
+          sed -e "s|IMAGE_TAG|${{ vars.DOCKERHUB_USERNAME }}/auth-service:dev-${{ github.sha }}|g" \
+              -e "s|NOMAD_NAMESPACE_PLACEHOLDER|${{ vars.NOMAD_NAMESPACE }}|g" \
+              nomad/auth-service.nomad.tpl > nomad/auth-service.nomad
+          cat nomad/auth-service.nomad
           nomad job run -namespace=$NOMAD_NAMESPACE nomad/auth-service.nomad
