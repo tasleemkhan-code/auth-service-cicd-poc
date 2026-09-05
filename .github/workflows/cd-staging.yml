@@ -1,33 +1,32 @@
 name: Deploy to Staging
-
 on:
   push:
     branches: [main]
-
 jobs:
   build-and-deploy:
     runs-on: self-hosted
     environment: staging
-
     steps:
       - uses: actions/checkout@v4
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and push
+        shell: bash
         run: |
           docker build -t ${{ vars.DOCKERHUB_USERNAME }}/auth-service:staging-${{ github.sha }} .
           docker push ${{ vars.DOCKERHUB_USERNAME }}/auth-service:staging-${{ github.sha }}
-
       - name: Deploy to Nomad
+        shell: bash
         env:
           NOMAD_ADDR: ${{ vars.NOMAD_ADDR }}
           NOMAD_NAMESPACE: ${{ vars.NOMAD_NAMESPACE }}
           NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
         run: |
-          sed "s|IMAGE_TAG|${{ vars.DOCKERHUB_USERNAME }}/auth-service:staging-${{ github.sha }}|g" nomad/auth-service.nomad.tpl > nomad/auth-service.nomad
+          sed -e "s|IMAGE_TAG|${{ vars.DOCKERHUB_USERNAME }}/auth-service:staging-${{ github.sha }}|g" \
+              -e "s|NOMAD_NAMESPACE_PLACEHOLDER|${{ vars.NOMAD_NAMESPACE }}|g" \
+              nomad/auth-service.nomad.tpl > nomad/auth-service.nomad
+          cat nomad/auth-service.nomad
           nomad job run -namespace=$NOMAD_NAMESPACE nomad/auth-service.nomad
