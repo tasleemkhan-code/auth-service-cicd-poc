@@ -5,7 +5,7 @@ job "auth-service" {
   group "auth" {
     network {
       port "http" {
-        static = 8080
+        static = PORT_PLACEHOLDER
       }
     }
 

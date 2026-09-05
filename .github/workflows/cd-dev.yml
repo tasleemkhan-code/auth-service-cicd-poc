@@ -33,6 +33,7 @@ jobs:
         run: |
           sed -e "s|IMAGE_TAG|${{ vars.DOCKERHUB_USERNAME }}/auth-service:dev-${{ github.sha }}|g" \
               -e "s|NOMAD_NAMESPACE_PLACEHOLDER|${{ vars.NOMAD_NAMESPACE }}|g" \
+              -e "s|PORT_PLACEHOLDER|8080|g" \
               nomad/auth-service.nomad.tpl > nomad/auth-service.nomad
           cat nomad/auth-service.nomad
           nomad job run -namespace=$NOMAD_NAMESPACE nomad/auth-service.nomad
