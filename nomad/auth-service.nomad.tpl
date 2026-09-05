@@ -6,6 +6,7 @@ job "auth-service" {
     network {
       port "http" {
         static = PORT_PLACEHOLDER
+        to     = 8080
       }
     }
 
